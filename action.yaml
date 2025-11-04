@@ -1,6 +1,6 @@
-name: Fetch Infisical Secrets
-author: "Infisical"
-description: "Fetch secrets from Infisical into your Github workflows"
+name: Fetch Infisical Token
+author: "RikthePixel"
+description: "Fetch an Infisical token from Infisical into your Github workflows"
 branding:
   icon: "lock"
   color: "yellow"
@@ -21,36 +21,10 @@ inputs:
   oidc-audience:
     description: "Custom aud claim for the signed Github ID token"
     required: false
-  project-slug:
-    description: "Source project slug"
-    required: true
-  env-slug:
-    description: "Source environment slug"
-    required: true
   domain:
     description: "Infisical URL (defaults to https://app.infisical.com )"
     required: false
     default: "https://app.infisical.com"
-  export-type:
-    description: "If set to `env`, it will set the fetched secrets as environment variables for subsequent steps of a workflow. If set to `file`, it will export the secrets in a .env file in the defined file-output-path"
-    required: false
-    default: "env"
-  file-output-path:
-    description: "The path to save the file when export-type is set to `file`"
-    required: false
-    default: "/.env"
-  secret-path:
-    description: "Source path, example: `/my-secret-path`"
-    required: false
-    default: "/"
-  include-imports:
-    description: "If set to `true`, it will include imported secrets"
-    required: false
-    default: true
-  recursive:
-    description: "If set to `true`, it will fetch all secrets from the specified base path and all of its subdirectories"
-    required: false
-    default: false
   extra-headers:
     description: "Extra headers to add to all requests sent to Infisical"
     required: false

@@ -1,6 +1,6 @@
-# Infisical Secrets Action
+# Infisical Token Action
 
-This GitHub Action enables you to import secrets from Infisical—whether hosted in the cloud or self-hosted—directly into your GitHub workflows.
+This GitHub Actions gets an Infisical token from the cloud or self-hosted infisical instance and injects it into the env as `env.INFISICAL_TOKEN`
 
 ## Configuration
 
@@ -21,8 +21,6 @@ This GitHub Action enables you to import secrets from Infisical—whether hosted
     method: "aws-iam"
     identity-id: "24be0d94-b43a-41c4-812c-1e8654d9ce1e"
     domain: "https://app.infisical.com" # Update to the instance URL when using EU (https://eu.infisical.com), a dedicated instance, or a self-hosted instance
-    env-slug: "dev"
-    project-slug: "cli-integration-tests-9-edj"
 ```
 
 ### OIDC Auth
@@ -58,32 +56,8 @@ Secrets are injected as environment variables and can be referenced by subsequen
     method: "oidc"
     identity-id: "24be0d94-b43a-41c4-812c-1e8654d9ce1e"
     domain: "https://app.infisical.com" # Update to the instance URL when using EU (https://eu.infisical.com), a dedicated instance, or a self-hosted instance
-    env-slug: "dev"
-    project-slug: "cli-integration-tests-9-edj"
-```
-
-### As a file
-
-Exports secrets to a file in your `GITHUB_WORKSPACE`, useful for applications that read from `.env` files.
-
-```yaml
-- uses: Infisical/secrets-action@v1.0.9
-  with:
-    method: "oidc"
-    identity-id: "24be0d94-b43a-41c4-812c-1e8654d9ce1e"
-    domain: "https://app.infisical.com" # Update to the instance URL when using EU (https://eu.infisical.com), a dedicated instance, or a self-hosted instance
-    env-slug: "dev"
-    project-slug: "cli-integration-tests-9-edj"
-    export-type: "file"
-    file-output-path: "/src/.env" # defaults to "/.env"
-```
-
-**Note**: Make sure to configure an `actions/checkout` step before using this action in file export mode
-
-```yaml
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
+- name: Example
+  run: echo "${{ env.INFISICAL_TOKEN }}"
 ```
 
 ## Inputs
@@ -108,37 +82,9 @@ steps:
 
 **Optional**. Custom aud claim for the signed Github ID token
 
-### `project-slug`
-
-**Required**. Source project slug
-
-### `env-slug`
-
-**Required**. Source environment slug
-
 ### `domain`
 
 **Optional**. Infisical URL. Defaults to https://app.infisical.com. If you're using Infisical EU (https://eu.infisical.com) or a self-hosted/dedicated instance, you will need to set the appropriate value for this field.
-
-### `export-type`
-
-**Optional**. If set to `env`, it will set the fetched secrets as environment variables for subsequent steps of a workflow. If set to `file`, it will export the secrets in a .env file in the defined file-output-path. Defaults to `env`
-
-### `file-output-path`
-
-**Optional**. The path to save the file when export-type is set to `file`. Defaults to `/.env`
-
-### `secret-path`
-
-**Optional**. Source secret path. Defaults to `/`.  Example: `/my-secret-path`.
-
-### `include-imports`
-
-**Optional**. If set to `true`, it will include imported secrets. Defaults to `true`
-
-### `recursive`
-
-**Optional**. If set to `true`, it will fetch all secrets from the specified base path and all of its subdirectories. Defaults to `false`
 
 ### `extra-headers`
 
@@ -153,32 +99,6 @@ extra-headers: |
     X-Authentication-Secret: ${{ secrets.AUTH_SECRET }}
 ```
 
-# Using Infisical Secrets Action with Internal CA Certificate
+## Credit
 
-When your Infisical instance uses an internal Certificate Authority (CA) that isn't trusted by default in GitHub Actions runners, you'll need to configure the action to recognize your custom CA certificate.
-
-
-## Setup
-
-### 1. Add your CA certificate to your repository
-- Save your CA certificate file (e.g., `ca-certificate.pem`) in your repository root or `.github/` directory
-- Ensure the certificate is in PEM format
-
-### 2. Configure the GitHub Actions workflow to use it
-```yaml
-jobs:
-  your-job-name:
-    runs-on: ubuntu-latest
-    env:
-      NODE_EXTRA_CA_CERTS: ./ca-certificate.pem # Path to your CA certificate
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Setup Infisical Secrets
-        uses: Infisical/secrets-action@v1.0.12
-        with:
-          method: "universal"
-          domain: "https://<infisical instance url>"  # Your internal Infisical domain
-          # rest of the parameters
-```
+All credit goes to the Infisical team for creating the [infisical/secrets-action](https://github.com/Infisical/secrets-action). This is simply a fork that has been modified to fit my needs.
