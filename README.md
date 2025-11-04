@@ -16,7 +16,7 @@ This GitHub Actions gets an Infisical token from the cloud or self-hosted infisi
 - Ensure your runner has network access to AWS STS API endpoints.
 
 ```yaml
-- uses: Infisical/secrets-action@v1.0.9
+- uses: Rikthepixel/infisical-token-action@v1.0.1
   with:
     method: "aws-iam"
     identity-id: "24be0d94-b43a-41c4-812c-1e8654d9ce1e"
@@ -51,7 +51,7 @@ With this action, you can use your Infisical secrets in two ways: as environment
 Secrets are injected as environment variables and can be referenced by subsequent workflow steps.
 
 ```yaml
-- uses: Infisical/secrets-action@v1.0.9
+- uses: Rikthepixel/infisical-token-action@v1.0.1
   with:
     method: "oidc"
     identity-id: "24be0d94-b43a-41c4-812c-1e8654d9ce1e"
