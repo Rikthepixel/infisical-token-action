@@ -15,8 +15,9 @@ This GitHub Actions gets an Infisical token from the cloud or self-hosted infisi
 - Your GitHub Action runner must have access to AWS credentials (either through IAM roles, environment variables, or other AWS credential providers).
 - Ensure your runner has network access to AWS STS API endpoints.
 
+#### Example
 ```yaml
-- uses: Rikthepixel/infisical-token-action@v1.0.1
+- uses: Rikthepixel/infisical-token-action@v1.0.2
   with:
     method: "aws-iam"
     identity-id: "24be0d94-b43a-41c4-812c-1e8654d9ce1e"
@@ -36,22 +37,38 @@ permissions:
   contents: read
 ```
 
+#### Example
+
+```yaml
+- uses: Rikthepixel/infisical-token-action@v1.0.2
+  with:
+    method: "oidc"
+    identity-id: "24be0d94-b43a-41c4-812c-1e8654d9ce1e"
+    domain: "https://app.infisical.com" # Update to the instance URL when using EU (https://eu.infisical.com), a dedicated instance, or a self-hosted instance
+```
+
 ### Universal Auth
 
 - Configure a machine identity to have an auth method of "Universal Auth".
 - Get the machine identity's `client_id` and `client_secret` and store them as Github secrets (recommended) or environment variables.
 - Set the `client-id` and `client-secret` input parameters.
 
-## Usage
-
-With this action, you can use your Infisical secrets in two ways: as environment variables or as a file.
-
-### As environment variables
-
-Secrets are injected as environment variables and can be referenced by subsequent workflow steps.
+#### Example
 
 ```yaml
-- uses: Rikthepixel/infisical-token-action@v1.0.1
+- uses: Rikthepixel/infisical-token-action@v1.0.2
+  with:
+    client_id: ${{ env.client_id }}
+    client_secret: ${{ env.client_secret }}
+    domain: "https://app.infisical.com" # Update to the instance URL when using EU (https://eu.infisical.com), a dedicated instance, or a self-hosted instance
+```
+
+## Usage
+
+The `INFISICAL_TOKEN` is injected as an environment variable and can be referenced by subsequent workflow steps.
+
+```yaml
+- uses: Rikthepixel/infisical-token-action@v1.0.2
   with:
     method: "oidc"
     identity-id: "24be0d94-b43a-41c4-812c-1e8654d9ce1e"
