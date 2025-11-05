@@ -1,6 +1,6 @@
 {
   "name": "infisical-token-action",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Github action to get an Infisical token",
   "main": "lib/index.js",
   "type": "module",
